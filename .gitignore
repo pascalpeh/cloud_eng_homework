@@ -2,8 +2,9 @@
 **/.terraform/*
 
 # .tfstate files
-#*.tfstate
-#*.tfstate.*
+*.tfstate
+*.tfstate.*
+*.terraform.lock.hcl
 
 # Exclude all secret.tfvars
 secrets.auto.tfvars
