@@ -1,0 +1,21 @@
+# Create a new folder and save the contents of this file as "Vagrantfile" 
+# This pulls a VM image "gusztavvargadr/docker-linux" from public Vagrant box that has been pre-configured on Ubuntu OS with docker installed
+# In additional, a secondary nic interface with external IP address 192.168.2.48 will be created and it will bridge to physical wifi network
+# Note 1: The external IP address allows us to connect to this VM directly from our router network
+# Note 2: The ip address 192.168.2.48 needs to be an valid ip address from your home router network
+
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "gusztavvargadr/docker-linux"
+    config.vm.network "public_network", ip: "192.168.2.48", netmask:"255.255.252.0", hostname: true
+    config.vm.hostname = "dockerhost01"
+    config.vm.provision "shell",
+	path: "script/setup-containers.sh"
+  
+    # Configuration of VM hardware specs
+    config.vm.provider "virtualbox" do |vb|
+       vb.memory = "4096"
+       vb.cpus= "2"
+     end
+    
+  end
