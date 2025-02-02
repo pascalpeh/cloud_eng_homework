@@ -1,0 +1,634 @@
+PS C:\Users\pascalpeh\Documents\module1\tf-env\static_webpage> terraform destroy
+tls_private_key.demo_key: Refreshing state... [id=de5667e991097fb0986d557799b7ffde8bd36a05]
+local_file.ec2_private_key: Refreshing state... [id=2b97b958f9e13bde5d051ff0f7eea5281c8d65c6]
+module.vpc.aws_vpc.this: Refreshing state... [id=vpc-04eab93fe49a96ab5]
+aws_key_pair.generated_key: Refreshing state... [id=my_ec2_keypair]
+module.security_groups.aws_security_group.this[0]: Refreshing state... [id=sg-0f8c7c789564dd4bb]
+module.subnets.aws_subnet.this[0]: Refreshing state... [id=subnet-0f09b8ee7211d80d3]
+module.route_tables.aws_route_table.this[0]: Refreshing state... [id=rtb-0d92896a94075cf1d]     
+module.security_groups.aws_security_group.this[1]: Refreshing state... [id=sg-028d4605377e435d9]
+module.subnets.aws_subnet.this[1]: Refreshing state... [id=subnet-09a90fa3cb480af3e]
+module.igw.aws_internet_gateway.this: Refreshing state... [id=igw-067e1ac8d32564e64]
+module.route_association.aws_route_table_association.this[1]: Refreshing state... [id=rtbassoc-0675f53395efe939f]
+module.route_association.aws_route_table_association.this[0]: Refreshing state... [id=rtbassoc-00e948a6427961792]
+module.nacls.aws_network_acl.this[0]: Refreshing state... [id=acl-019fc823fa4fa939f]
+module.route_igw.aws_route.this[0]: Refreshing state... [id=r-rtb-0d92896a94075cf1d1080289494]
+module.static_webpage_ec2.aws_instance.this[0]: Refreshing state... [id=i-0f84352b2b15c27c2]
+aws_eip.ec2: Refreshing state... [id=eipalloc-0d35ce5beafb216a8]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_eip.ec2 will be destroyed
+  - resource "aws_eip" "ec2" {
+      - allocation_id        = "eipalloc-0d35ce5beafb216a8" -> null
+      - arn                  = "arn:aws:ec2:ap-southeast-1:847759535325:elastic-ip/eipalloc-0d35ce5beafb216a8" -> null
+      - association_id       = "eipassoc-058937f87bf97640c" -> null
+      - domain               = "vpc" -> null
+      - id                   = "eipalloc-0d35ce5beafb216a8" -> null
+      - instance             = "i-0f84352b2b15c27c2" -> null
+      - network_border_group = "ap-southeast-1" -> null
+      - network_interface    = "eni-019659e1fe8b98283" -> null
+      - private_dns          = "ip-192-168-1-6.ap-southeast-1.compute.internal" -> null
+      - private_ip           = "192.168.1.6" -> null
+      - public_dns           = "ec2-18-139-98-24.ap-southeast-1.compute.amazonaws.com" -> null
+      - public_ip            = "18.139.98.24" -> null
+      - public_ipv4_pool     = "amazon" -> null
+      - tags                 = {} -> null
+      - tags_all             = {} -> null
+      - vpc                  = true -> null
+    }
+
+  # aws_key_pair.generated_key will be destroyed
+  - resource "aws_key_pair" "generated_key" {
+      - arn         = "arn:aws:ec2:ap-southeast-1:847759535325:key-pair/my_ec2_keypair" -> null
+      - fingerprint = "bd:05:e6:94:3c:64:55:28:c3:df:43:d1:de:5d:82:76" -> null
+      - id          = "my_ec2_keypair" -> null
+      - key_name    = "my_ec2_keypair" -> null
+      - key_pair_id = "key-08e15888ea853ff39" -> null
+      - key_type    = "rsa" -> null
+      - public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkBWK1pO5LqCMic+01XaMnsaG6n8UetHyOMSpgKwmWxdamf5xBwCTZVx7zA/rlO0FBR7BeRn9veLZW0FLk5bgb7YQ1d3RywsLQ/ZAVpq7OiAD1qZWVtW7JEXjIm5gESDGr513hoqwOF2Q37svnVdzVv3KI6Dv+IcLyCqq6Q0OX99xpRO7pJWrVcgbaiIh11JqDlSaqp6vo8PnUPds1ueYHye2LxnSsR3+3SvAUjEqKm1AhZ0Y2iBHSp8dd+fTfGTNINbdDPxfHguNOMpsUkt/Yx/pZBIccbCdaDFfLgKhweZi14/zoKyRQ4WtR5tJLoLKYvDLxl+6/ks/HUEzwJR2p0afkSZuy59+BIwtNgVJwIn9kTZN9K55uBeokAR0QmeJR85c+Hwc8aq2sS0e8ZY6WljqTBa5ezOeY+ghlgRFEvkOQdjv7HwywL7eCwGnC7zabPWREdt35ZWfvjY+g7HR6aID5pWMbHxhwm7P+nrm5bOnXwr85UdwPmMe3D4M0DLId25r/kQk5heKqUrsn2iw4kW8hS6+2aY7toL1WG/pkyC4yWRMe60hKbvXFJVGXPdHFpRpmEUABb47CNT5Z4pBw23q+79d99DJsx06Guxw34e0P9LnkGT2JlUCYdYbGlX+ASOm/KqCwxsPUPvD3+QSRwrgVBuSGbmm3mV1huRiYlw==" -> null
+      - tags        = {} -> null
+      - tags_all    = {} -> null
+    }
+
+  # local_file.ec2_private_key will be destroyed
+  - resource "local_file" "ec2_private_key" {
+      - content              = (sensitive value) -> null
+      - content_base64sha256 = "sa31WU8VgX2pbkjpvEMERvEzGDocLqy3M8ImMzWqYYE=" -> null
+      - content_base64sha512 = "0n9/TfBTfLXZmNdGuyFuwZyPNCcMZ22lruDM//nf8Kve9dlnC1WNtLZ+BWA+g359BRbdUgg2V3wKoyokcLPF0g==" -> null
+      - content_md5          = "c738892bb0a9eed9ca8536522e81ed66" -> null
+      - content_sha1         = "2b97b958f9e13bde5d051ff0f7eea5281c8d65c6" -> null
+      - content_sha256       = "b1adf5594f15817da96e48e9bc430446f133183a1c2eacb733c2263335aa6181" -> null
+      - content_sha512       = "d27f7f4df0537cb5d998d746bb216ec19c8f34270c676da5aee0ccfff9dff0abdef5d9670b558db4b67e05603e837e7d0516dd520836577c0aa32a2470b3c5d2" -> null
+      - directory_permission = "0777" -> null
+      - file_permission      = "0777" -> null
+      - filename             = "./ssh_keypair/ec2_private_key.ppk" -> null
+      - id                   = "2b97b958f9e13bde5d051ff0f7eea5281c8d65c6" -> null
+    }
+
+  # tls_private_key.demo_key will be destroyed
+  - resource "tls_private_key" "demo_key" {
+      - algorithm                     = "RSA" -> null
+      - ecdsa_curve                   = "P224" -> null
+      - id                            = "de5667e991097fb0986d557799b7ffde8bd36a05" -> null
+      - private_key_openssh           = (sensitive value) -> null
+      - private_key_pem               = (sensitive value) -> null
+      - private_key_pem_pkcs8         = (sensitive value) -> null
+      - public_key_fingerprint_md5    = "d3:7a:27:22:ae:f7:d5:a9:7c:85:7a:4a:f6:35:26:a7" -> null
+      - public_key_fingerprint_sha256 = "SHA256:I+ElSwL8OaLd9/6we7Q4YXzgZ0/WglNA2y2fQHDYpv0" -> null
+      - public_key_openssh            = <<-EOT
+            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkBWK1pO5LqCMic+01XaMnsaG6n8UetHyOMSpgKwmWxdamf5xBwCTZVx7zA/rlO0FBR7BeRn9veLZW0FLk5bgb7YQ1d3RywsLQ/ZAVpq7OiAD1qZWVtW7JEXjIm5gESDGr513hoqwOF2Q37svnVdzVv3KI6Dv+IcLyCqq6Q0OX99xpRO7pJWrVcgbaiIh11JqDlSaqp6vo8PnUPds1ueYHye2LxnSsR3+3SvAUjEqKm1AhZ0Y2iBHSp8dd+fTfGTNINbdDPxfHguNOMpsUkt/Yx/pZBIccbCdaDFfLgKhweZi14/zoKyRQ4WtR5tJLoLKYvDLxl+6/ks/HUEzwJR2p0afkSZuy59+BIwtNgVJwIn9kTZN9K55uBeokAR0QmeJR85c+Hwc8aq2sS0e8ZY6WljqTBa5ezOeY+ghlgRFEvkOQdjv7HwywL7eCwGnC7zabPWREdt35ZWfvjY+g7HR6aID5pWMbHxhwm7P+nrm5bOnXwr85UdwPmMe3D4M0DLId25r/kQk5heKqUrsn2iw4kW8hS6+2aY7toL1WG/pkyC4yWRMe60hKbvXFJVGXPdHFpRpmEUABb47CNT5Z4pBw23q+79d99DJsx06Guxw34e0P9LnkGT2JlUCYdYbGlX+ASOm/KqCwxsPUPvD3+QSRwrgVBuSGbmm3mV1huRiYlw==
+        EOT -> null
+      - public_key_pem                = <<-EOT
+            -----BEGIN PUBLIC KEY-----
+            MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApAVitaTuS6gjInPtNV2j
+            J7Ghup/FHrR8jjEqYCsJlsXWpn+cQcAk2Vce8wP65TtBQUewXkZ/b3i2VtBS5OW4
+            G+2ENXd0csLC0P2QFaauzogA9amVlbVuyRF4yJuYBEgxq+dd4aKsDhdkN+7L51Xc
+            1b9yiOg7/iHC8gqqukNDl/fcaUTu6SVq1XIG2oiIddSag5Umqqer6PD51D3bNbnm
+            B8nti8Z0rEd/t0rwFIxKiptQIWdGNogR0qfHXfn03xkzSDW3Qz8Xx4LjTjKbFJLf
+            2Mf6WQSHHGwnWgxXy4CocHmYteP86CskUOFrUebSS6CymLwy8Zfuv5LPx1BM8CUd
+            qdGn5EmbsuffgSMLTYFScCJ/ZE2TfSuebgXqJAEdEJniUfOXPh8HPGqtrEtHvGWO
+            lpY6kwWuXsznmPoIZYERRL5DkHY7+x8MsC+3gsBpwu82mz1kRHbd+WVn742PoOx0
+            emiA+aVjGx8YcJuz/p65uWzp18K/OVHcD5jHtw+DNAyyHdua/5EJOYXiqlK7J9os
+            OJFvIUuvtmmO7aC9Vhv6ZMguMlkTHutISm71xSVRlz3RxaUaZhFAAW+OwjU+WeKQ
+            cNt6vu/XffQybMdOhrscN+HtD/S55Bk9iZVAmHWGxpV/gEjpvyqgsMbD1D7w9/kE
+            kcK4FQbkhm5pt5ldYbkYmJcCAwEAAQ==
+            -----END PUBLIC KEY-----
+        EOT -> null
+      - rsa_bits                      = 4096 -> null
+    }
+
+  # module.igw.aws_internet_gateway.this will be destroyed
+  - resource "aws_internet_gateway" "this" {
+      - arn      = "arn:aws:ec2:ap-southeast-1:847759535325:internet-gateway/igw-067e1ac8d32564e64" -> null
+      - id       = "igw-067e1ac8d32564e64" -> null
+      - owner_id = "847759535325" -> null
+      - tags     = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "igw-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "igw-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_id   = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.nacls.aws_network_acl.this[0] will be destroyed
+  - resource "aws_network_acl" "this" {
+      - arn        = "arn:aws:ec2:ap-southeast-1:847759535325:network-acl/acl-019fc823fa4fa939f" -> null
+      - egress     = [
+          - {
+              - action          = "allow"
+              - cidr_block      = "0.0.0.0/0"
+              - from_port       = 0
+              - icmp_code       = 0
+              - icmp_type       = 0
+              - ipv6_cidr_block = ""
+              - protocol        = "-1"
+              - rule_no         = 100
+              - to_port         = 0
+            },
+        ] -> null
+      - id         = "acl-019fc823fa4fa939f" -> null
+      - ingress    = [
+          - {
+              - action          = "allow"
+              - cidr_block      = "0.0.0.0/0"
+              - from_port       = 0
+              - icmp_code       = 0
+              - icmp_type       = 0
+              - ipv6_cidr_block = ""
+              - protocol        = "-1"
+              - rule_no         = 100
+              - to_port         = 0
+            },
+        ] -> null
+      - owner_id   = "847759535325" -> null
+      - subnet_ids = [
+          - "subnet-09a90fa3cb480af3e",
+          - "subnet-0f09b8ee7211d80d3",
+        ] -> null
+      - tags       = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "nacl-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all   = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "nacl-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_id     = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.route_association.aws_route_table_association.this[0] will be destroyed
+  - resource "aws_route_table_association" "this" {
+      - id             = "rtbassoc-00e948a6427961792" -> null
+      - route_table_id = "rtb-0d92896a94075cf1d" -> null
+      - subnet_id      = "subnet-0f09b8ee7211d80d3" -> null
+    }
+
+  # module.route_association.aws_route_table_association.this[1] will be destroyed
+  - resource "aws_route_table_association" "this" {
+      - id             = "rtbassoc-0675f53395efe939f" -> null
+      - route_table_id = "rtb-0d92896a94075cf1d" -> null
+      - subnet_id      = "subnet-09a90fa3cb480af3e" -> null
+    }
+
+  # module.route_igw.aws_route.this[0] will be destroyed
+  - resource "aws_route" "this" {
+      - destination_cidr_block = "0.0.0.0/0" -> null
+      - gateway_id             = "igw-067e1ac8d32564e64" -> null
+      - id                     = "r-rtb-0d92896a94075cf1d1080289494" -> null
+      - origin                 = "CreateRoute" -> null
+      - route_table_id         = "rtb-0d92896a94075cf1d" -> null
+      - state                  = "active" -> null
+    }
+
+  # module.route_tables.aws_route_table.this[0] will be destroyed
+  - resource "aws_route_table" "this" {
+      - arn              = "arn:aws:ec2:ap-southeast-1:847759535325:route-table/rtb-0d92896a94075cf1d" -> null
+      - id               = "rtb-0d92896a94075cf1d" -> null
+      - owner_id         = "847759535325" -> null
+      - propagating_vgws = [] -> null
+      - route            = [
+          - {
+              - carrier_gateway_id         = ""
+              - cidr_block                 = "0.0.0.0/0"
+              - core_network_arn           = ""
+              - destination_prefix_list_id = ""
+              - egress_only_gateway_id     = ""
+              - gateway_id                 = "igw-067e1ac8d32564e64"
+              - ipv6_cidr_block            = ""
+              - local_gateway_id           = ""
+              - nat_gateway_id             = ""
+              - network_interface_id       = ""
+              - transit_gateway_id         = ""
+              - vpc_endpoint_id            = ""
+              - vpc_peering_connection_id  = ""
+            },
+        ] -> null
+      - tags             = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "rt-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all         = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "rt-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_id           = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.security_groups.aws_security_group.this[0] will be destroyed
+  - resource "aws_security_group" "this" {
+      - arn                    = "arn:aws:ec2:ap-southeast-1:847759535325:security-group/sg-0f8c7c789564dd4bb" -> null
+      - description            = "Security Group for Bastion login" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all outbound"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0f8c7c789564dd4bb" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow ICMP Ping"
+              - from_port        = -1
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "icmp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = -1
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "RDP rule"
+              - from_port        = 3389
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 3389
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "SSH rule"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "sgrp-bastion-001" -> null
+      - owner_id               = "847759535325" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "sgrp-bastion-001"
+        } -> null
+      - tags_all               = {
+          - "Name" = "sgrp-bastion-001"
+        } -> null
+      - vpc_id                 = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.security_groups.aws_security_group.this[1] will be destroyed
+  - resource "aws_security_group" "this" {
+      - arn                    = "arn:aws:ec2:ap-southeast-1:847759535325:security-group/sg-028d4605377e435d9" -> null
+      - description            = "Security Group for Web nodes" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all outbound"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-028d4605377e435d9" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTP inbound Rule"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "HTTPS inbound Rule"
+              - from_port        = 443
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 443
+            },
+        ] -> null
+      - name                   = "sgrp-web-001" -> null
+      - owner_id               = "847759535325" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "sgrp-web-001"
+        } -> null
+      - tags_all               = {
+          - "Name" = "sgrp-web-001"
+        } -> null
+      - vpc_id                 = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.static_webpage_ec2.aws_instance.this[0] will be destroyed
+  - resource "aws_instance" "this" {
+      - ami                                  = "ami-06dc977f58c8d7857" -> null
+      - arn                                  = "arn:aws:ec2:ap-southeast-1:847759535325:instance/i-0f84352b2b15c27c2" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "ap-southeast-1a" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 1 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-0f84352b2b15c27c2" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t2.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "my_ec2_keypair" -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-019659e1fe8b98283" -> null
+      - private_dns                          = "ip-192-168-1-6.ap-southeast-1.compute.internal" -> null
+      - private_ip                           = "192.168.1.6" -> null
+      - public_dns                           = "ec2-18-139-98-24.ap-southeast-1.compute.amazonaws.com" -> null
+      - public_ip                            = "18.139.98.24" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0f09b8ee7211d80d3" -> null
+      - tags                                 = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "ec2-static-webpage"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all                             = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "ec2-static-webpage"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data                            = "5aba96d7303a2633aba57b63797ab7bcecd6d406" -> null
+      - user_data_replace_on_change          = false -> null
+      - volume_tags                          = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "ebs-webserver-os"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_security_group_ids               = [
+          - "sg-028d4605377e435d9",
+          - "sg-0f8c7c789564dd4bb",
+        ] -> null
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count       = 1 -> null
+          - threads_per_core = 1 -> null
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "optional" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/sda1" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {} -> null
+          - tags_all              = {} -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-072444682e0570772" -> null
+          - volume_size           = 10 -> null
+          - volume_type           = "gp3" -> null
+        }
+    }
+
+  # module.subnets.aws_subnet.this[0] will be destroyed
+  - resource "aws_subnet" "this" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-1:847759535325:subnet/subnet-0f09b8ee7211d80d3" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-1a" -> null
+      - availability_zone_id                           = "apse1-az1" -> null
+      - cidr_block                                     = "192.168.1.0/28" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0f09b8ee7211d80d3" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "847759535325" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "sub-a-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all                                       = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "sub-a-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_id                                         = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.subnets.aws_subnet.this[1] will be destroyed
+  - resource "aws_subnet" "this" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-1:847759535325:subnet/subnet-09a90fa3cb480af3e" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-1b" -> null
+      - availability_zone_id                           = "apse1-az2" -> null
+      - cidr_block                                     = "192.168.1.16/28" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-09a90fa3cb480af3e" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "847759535325" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - tags                                           = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "sub-b-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all                                       = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "sub-b-pub-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - vpc_id                                         = "vpc-04eab93fe49a96ab5" -> null
+    }
+
+  # module.vpc.aws_vpc.this will be destroyed
+  - resource "aws_vpc" "this" {
+      - arn                                  = "arn:aws:ec2:ap-southeast-1:847759535325:vpc/vpc-04eab93fe49a96ab5" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "192.168.1.0/24" -> null
+      - default_network_acl_id               = "acl-029d26cdbd58efc81" -> null
+      - default_route_table_id               = "rtb-0fb343600ed84951a" -> null
+      - default_security_group_id            = "sg-0088b4cd3efbc9c0d" -> null
+      - dhcp_options_id                      = "dopt-0c77ef68" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-04eab93fe49a96ab5" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0fb343600ed84951a" -> null
+      - owner_id                             = "847759535325" -> null
+      - tags                                 = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "vpc-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+      - tags_all                             = {
+          - "Description" = "Created using Terraform"
+          - "Environment" = "Sandbox"
+          - "Name"        = "vpc-01"
+          - "Owner"       = "pascalpeh"
+        } -> null
+    }
+
+Plan: 0 to add, 0 to change, 16 to destroy.
+
+Changes to Outputs:
+  - ec2_private_key = (sensitive value) -> null
+  - ec2_public_ip   = "18.139.98.24" -> null
+  - eip_public_ip   = "18.139.98.24" -> null
+  - subnets_list    = {
+      - sub-a-pub-01 = "subnet-0f09b8ee7211d80d3"
+      - sub-b-pub-01 = "subnet-09a90fa3cb480af3e"
+    } -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+  local_file.ec2_private_key: Destroying... [id=2b97b958f9e13bde5d051ff0f7eea5281c8d65c6]
+local_file.ec2_private_key: Destruction complete after 0s
+module.route_association.aws_route_table_association.this[1]: Destroying... [id=rtbassoc-0675f53395efe939f]
+aws_key_pair.generated_key: Destroying... [id=my_ec2_keypair]
+module.route_association.aws_route_table_association.this[0]: Destroying... [id=rtbassoc-00e948a6427961792]
+module.nacls.aws_network_acl.this[0]: Destroying... [id=acl-019fc823fa4fa939f]
+aws_eip.ec2: Destroying... [id=eipalloc-0d35ce5beafb216a8]
+module.route_igw.aws_route.this[0]: Destroying... [id=r-rtb-0d92896a94075cf1d1080289494]
+aws_key_pair.generated_key: Destruction complete after 1s
+tls_private_key.demo_key: Destroying... [id=de5667e991097fb0986d557799b7ffde8bd36a05]
+tls_private_key.demo_key: Destruction complete after 0s
+module.route_association.aws_route_table_association.this[0]: Destruction complete after 1s
+module.route_association.aws_route_table_association.this[1]: Destruction complete after 1s
+module.route_igw.aws_route.this[0]: Destruction complete after 1s
+module.igw.aws_internet_gateway.this: Destroying... [id=igw-067e1ac8d32564e64]
+module.route_tables.aws_route_table.this[0]: Destroying... [id=rtb-0d92896a94075cf1d]
+module.nacls.aws_network_acl.this[0]: Destruction complete after 1s
+module.route_tables.aws_route_table.this[0]: Destruction complete after 0s
+aws_eip.ec2: Destruction complete after 2s
+module.static_webpage_ec2.aws_instance.this[0]: Destroying... [id=i-0f84352b2b15c27c2]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 10s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 10s elapsed]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 20s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 20s elapsed]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 30s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 30s elapsed]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 40s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 40s elapsed]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 50s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 50s elapsed]
+module.igw.aws_internet_gateway.this: Still destroying... [id=igw-067e1ac8d32564e64, 1m0s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 1m0s elapsed]
+module.igw.aws_internet_gateway.this: Destruction complete after 1m7s
+module.static_webpage_ec2.aws_instance.this[0]: Still destroying... [id=i-0f84352b2b15c27c2, 1m10s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Destruction complete after 1m11s
+module.subnets.aws_subnet.this[0]: Destroying... [id=subnet-0f09b8ee7211d80d3]
+module.security_groups.aws_security_group.this[1]: Destroying... [id=sg-028d4605377e435d9]
+module.subnets.aws_subnet.this[1]: Destroying... [id=subnet-09a90fa3cb480af3e]
+module.security_groups.aws_security_group.this[0]: Destroying... [id=sg-0f8c7c789564dd4bb]
+module.subnets.aws_subnet.this[0]: Destruction complete after 0s
+module.subnets.aws_subnet.this[1]: Destruction complete after 0s
+module.security_groups.aws_security_group.this[0]: Destruction complete after 0s
+module.security_groups.aws_security_group.this[1]: Destruction complete after 0s
+module.vpc.aws_vpc.this: Destroying... [id=vpc-04eab93fe49a96ab5]
+module.vpc.aws_vpc.this: Destruction complete after 1s
+
+Destroy complete! Resources: 16 destroyed.
+PS C:\Users\pascalpeh\Documents\module1\tf-env\static_webpage> 

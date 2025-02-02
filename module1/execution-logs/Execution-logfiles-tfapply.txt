@@ -1,0 +1,1128 @@
+PS C:\Users\pascalpeh\Documents\cloud_eng_homework\module1\tf-env\static_webpage> terraform init
+
+Initializing the backend...
+Initializing modules...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/local from the dependency lock file
+- Reusing previous version of hashicorp/tls from the dependency lock file
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/local v2.5.2
+- Using previously-installed hashicorp/tls v4.0.6
+- Using previously-installed hashicorp/aws v5.84.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see  
+any changes that are required for your infrastructure. All Terraform commands  
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,      
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
+PS C:\Users\pascalpeh\Documents\cloud_eng_homework\module1\tf-env\static_webpage> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:     
+
+  # aws_eip.ec2 will be created
+  + resource "aws_eip" "ec2" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags_all             = (known after apply)
+      + vpc                  = (known after apply)
+    }
+
+  # aws_key_pair.generated_key will be created
+  + resource "aws_key_pair" "generated_key" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "my_ec2_keypair"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = (known after apply)
+      + tags_all        = (known after apply)
+    }
+
+  # local_file.ec2_private_key will be created
+  + resource "local_file" "ec2_private_key" {
+      + content              = (sensitive value)
+      + content_base64sha256 = (known after apply)
+      + content_base64sha512 = (known after apply)
+      + content_md5          = (known after apply)
+      + content_sha1         = (known after apply)
+      + content_sha256       = (known after apply)
+      + content_sha512       = (known after apply)
+      + directory_permission = "0777"
+      + file_permission      = "0777"
+      + filename             = "./ssh_keypair/ec2_private_key.ppk"
+      + id                   = (known after apply)
+    }
+
+  # tls_private_key.demo_key will be created
+  + resource "tls_private_key" "demo_key" {
+      + algorithm                     = "RSA"
+      + ecdsa_curve                   = "P224"
+      + id                            = (known after apply)
+      + private_key_openssh           = (sensitive value)
+      + private_key_pem               = (sensitive value)
+      + private_key_pem_pkcs8         = (sensitive value)
+      + public_key_fingerprint_md5    = (known after apply)
+      + public_key_fingerprint_sha256 = (known after apply)
+      + public_key_openssh            = (known after apply)
+      + public_key_pem                = (known after apply)
+      + rsa_bits                      = 4096
+    }
+
+  # module.igw.aws_internet_gateway.this will be created
+  + resource "aws_internet_gateway" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "igw-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "igw-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.nacls.aws_network_acl.this[0] will be created
+  + resource "aws_network_acl" "this" {
+      + arn        = (known after apply)
+      + egress     = [
+          + {
+              + action          = "allow"
+              + cidr_block      = "0.0.0.0/0"
+              + from_port       = 0
+              + ipv6_cidr_block = ""
+              + protocol        = "-1"
+              + rule_no         = 100
+              + to_port         = 0
+            },
+        ]
+      + id         = (known after apply)
+      + ingress    = [
+          + {
+              + action          = "allow"
+              + cidr_block      = "0.0.0.0/0"
+              + from_port       = 0
+              + ipv6_cidr_block = ""
+              + protocol        = "-1"
+              + rule_no         = 100
+              + to_port         = 0
+            },
+        ]
+      + owner_id   = (known after apply)
+      + subnet_ids = (known after apply)
+      + tags       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "nacl-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all   = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "nacl-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id     = (known after apply)
+    }
+
+  # module.route_association.aws_route_table_association.this[0] will be created
+  + resource "aws_route_table_association" "this" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.route_association.aws_route_table_association.this[1] will be created
+  + resource "aws_route_table_association" "this" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.route_igw.aws_route.this[0] will be created
+  + resource "aws_route" "this" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + gateway_id             = (known after apply)
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+    }
+
+  # module.route_tables.aws_route_table.this[0] will be created
+  + resource "aws_route_table" "this" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = (known after apply)
+      + tags             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "rt-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all         = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "rt-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.security_groups.aws_security_group.this[0] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "Security Group for Bastion login"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow ICMP Ping"
+              + from_port        = -1
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "icmp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = -1
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "RDP rule"
+              + from_port        = 3389
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 3389
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH rule"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "sgrp-bastion-001"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "sgrp-bastion-001"
+        }
+      + tags_all               = {
+          + "Name" = "sgrp-bastion-001"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security_groups.aws_security_group.this[1] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "Security Group for Web nodes"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "HTTP inbound Rule"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "HTTPS inbound Rule"
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+        ]
+      + name                   = "sgrp-web-001"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "sgrp-web-001"
+        }
+      + tags_all               = {
+          + "Name" = "sgrp-web-001"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.static_webpage_ec2.aws_instance.this[0] will be created
+  + resource "aws_instance" "this" {
+      + ami                                  = "ami-06dc977f58c8d7857"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "my_ec2_keypair"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ec2-static-webpage"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ec2-static-webpage"
+          + "Owner"       = "pascalpeh"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = "5aba96d7303a2633aba57b63797ab7bcecd6d406"
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + volume_tags                          = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ebs-webserver-os"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_security_group_ids               = (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+  # module.subnets.aws_subnet.this[0] will be created
+  + resource "aws_subnet" "this" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "192.168.1.0/28"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-a-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                                       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-a-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.subnets.aws_subnet.this[1] will be created
+  + resource "aws_subnet" "this" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "192.168.1.16/28"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-b-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                                       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-b-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_vpc.this will be created
+  + resource "aws_vpc" "this" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "192.168.1.0/24"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "vpc-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "vpc-01"
+          + "Owner"       = "pascalpeh"
+        }
+    }
+
+Plan: 16 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_private_key = (sensitive value)
+  + ec2_public_ip   = (known after apply)
+  + eip_public_ip   = (known after apply)
+  + subnets_list    = {
+      + sub-a-pub-01 = (known after apply)
+      + sub-b-pub-01 = (known after apply)
+    }
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+
+PS C:\Users\pascalpeh\Documents\cloud_eng_homework\module1\tf-env\static_webpage> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_eip.ec2 will be created
+  + resource "aws_eip" "ec2" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags_all             = (known after apply)
+      + vpc                  = (known after apply)
+    }
+
+  # aws_key_pair.generated_key will be created
+  + resource "aws_key_pair" "generated_key" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "my_ec2_keypair"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = (known after apply)
+      + tags_all        = (known after apply)
+    }
+
+  # local_file.ec2_private_key will be created
+  + resource "local_file" "ec2_private_key" {
+      + content              = (sensitive value)
+      + content_base64sha256 = (known after apply)
+      + content_base64sha512 = (known after apply)
+      + content_md5          = (known after apply)
+      + content_sha1         = (known after apply)
+      + content_sha256       = (known after apply)
+      + content_sha512       = (known after apply)
+      + directory_permission = "0777"
+      + file_permission      = "0777"
+      + filename             = "./ssh_keypair/ec2_private_key.ppk"
+      + id                   = (known after apply)
+    }
+
+  # tls_private_key.demo_key will be created
+  + resource "tls_private_key" "demo_key" {
+      + algorithm                     = "RSA"
+      + ecdsa_curve                   = "P224"
+      + id                            = (known after apply)
+      + private_key_openssh           = (sensitive value)
+      + private_key_pem               = (sensitive value)
+      + private_key_pem_pkcs8         = (sensitive value)
+      + public_key_fingerprint_md5    = (known after apply)
+      + public_key_fingerprint_sha256 = (known after apply)
+      + public_key_openssh            = (known after apply)
+      + public_key_pem                = (known after apply)
+      + rsa_bits                      = 4096
+    }
+
+  # module.igw.aws_internet_gateway.this will be created
+  + resource "aws_internet_gateway" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "igw-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "igw-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.nacls.aws_network_acl.this[0] will be created
+  + resource "aws_network_acl" "this" {
+      + arn        = (known after apply)
+      + egress     = [
+          + {
+              + action          = "allow"
+              + cidr_block      = "0.0.0.0/0"
+              + from_port       = 0
+              + ipv6_cidr_block = ""
+              + protocol        = "-1"
+              + rule_no         = 100
+              + to_port         = 0
+            },
+        ]
+      + id         = (known after apply)
+      + ingress    = [
+          + {
+              + action          = "allow"
+              + cidr_block      = "0.0.0.0/0"
+              + from_port       = 0
+              + ipv6_cidr_block = ""
+              + protocol        = "-1"
+              + rule_no         = 100
+              + to_port         = 0
+            },
+        ]
+      + owner_id   = (known after apply)
+      + subnet_ids = (known after apply)
+      + tags       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "nacl-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all   = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "nacl-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id     = (known after apply)
+    }
+
+  # module.route_association.aws_route_table_association.this[0] will be created
+  + resource "aws_route_table_association" "this" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.route_association.aws_route_table_association.this[1] will be created
+  + resource "aws_route_table_association" "this" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.route_igw.aws_route.this[0] will be created
+  + resource "aws_route" "this" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + gateway_id             = (known after apply)
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+    }
+
+  # module.route_tables.aws_route_table.this[0] will be created
+  + resource "aws_route_table" "this" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = (known after apply)
+      + tags             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "rt-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all         = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "rt-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.security_groups.aws_security_group.this[0] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "Security Group for Bastion login"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow ICMP Ping"
+              + from_port        = -1
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "icmp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = -1
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "RDP rule"
+              + from_port        = 3389
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 3389
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH rule"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "sgrp-bastion-001"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "sgrp-bastion-001"
+        }
+      + tags_all               = {
+          + "Name" = "sgrp-bastion-001"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security_groups.aws_security_group.this[1] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "Security Group for Web nodes"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "HTTP inbound Rule"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "HTTPS inbound Rule"
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+        ]
+      + name                   = "sgrp-web-001"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "sgrp-web-001"
+        }
+      + tags_all               = {
+          + "Name" = "sgrp-web-001"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.static_webpage_ec2.aws_instance.this[0] will be created
+  + resource "aws_instance" "this" {
+      + ami                                  = "ami-06dc977f58c8d7857"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "my_ec2_keypair"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ec2-static-webpage"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ec2-static-webpage"
+          + "Owner"       = "pascalpeh"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = "5aba96d7303a2633aba57b63797ab7bcecd6d406"
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + volume_tags                          = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "ebs-webserver-os"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_security_group_ids               = (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+  # module.subnets.aws_subnet.this[0] will be created
+  + resource "aws_subnet" "this" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "192.168.1.0/28"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-a-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                                       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-a-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.subnets.aws_subnet.this[1] will be created
+  + resource "aws_subnet" "this" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "192.168.1.16/28"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-b-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                                       = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "sub-b-pub-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_vpc.this will be created
+  + resource "aws_vpc" "this" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "192.168.1.0/24"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "vpc-01"
+          + "Owner"       = "pascalpeh"
+        }
+      + tags_all                             = {
+          + "Description" = "Created using Terraform"
+          + "Environment" = "Sandbox"
+          + "Name"        = "vpc-01"
+          + "Owner"       = "pascalpeh"
+        }
+    }
+
+Plan: 16 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_private_key = (sensitive value)
+  + ec2_public_ip   = (known after apply)
+  + eip_public_ip   = (known after apply)
+  + subnets_list    = {
+      + sub-a-pub-01 = (known after apply)
+      + sub-b-pub-01 = (known after apply)
+    }
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+  
+tls_private_key.demo_key: Creating...
+module.vpc.aws_vpc.this: Creating...
+tls_private_key.demo_key: Creation complete after 2s [id=de5667e991097fb0986d557799b7ffde8bd36a05]
+aws_key_pair.generated_key: Creating...
+local_file.ec2_private_key: Creating...
+local_file.ec2_private_key: Creation complete after 1s [id=2b97b958f9e13bde5d051ff0f7eea5281c8d65c6]
+aws_key_pair.generated_key: Creation complete after 1s [id=my_ec2_keypair]
+module.vpc.aws_vpc.this: Still creating... [10s elapsed]
+module.vpc.aws_vpc.this: Creation complete after 11s [id=vpc-04eab93fe49a96ab5]
+module.igw.aws_internet_gateway.this: Creating...
+module.route_tables.aws_route_table.this[0]: Creating...
+module.subnets.aws_subnet.this[0]: Creating...
+module.subnets.aws_subnet.this[1]: Creating...
+module.security_groups.aws_security_group.this[0]: Creating...
+module.security_groups.aws_security_group.this[1]: Creating...
+module.igw.aws_internet_gateway.this: Creation complete after 0s [id=igw-067e1ac8d32564e64]
+module.route_tables.aws_route_table.this[0]: Creation complete after 0s [id=rtb-0d92896a94075cf1d]
+module.route_igw.aws_route.this[0]: Creating...
+module.route_igw.aws_route.this[0]: Creation complete after 0s [id=r-rtb-0d92896a94075cf1d1080289494]
+module.security_groups.aws_security_group.this[1]: Creation complete after 2s [id=sg-028d4605377e435d9]
+module.security_groups.aws_security_group.this[0]: Creation complete after 2s [id=sg-0f8c7c789564dd4bb]
+module.subnets.aws_subnet.this[0]: Still creating... [10s elapsed]
+module.subnets.aws_subnet.this[1]: Still creating... [10s elapsed]
+module.subnets.aws_subnet.this[1]: Creation complete after 11s [id=subnet-09a90fa3cb480af3e]
+module.subnets.aws_subnet.this[0]: Creation complete after 11s [id=subnet-0f09b8ee7211d80d3]
+module.route_association.aws_route_table_association.this[1]: Creating...
+module.route_association.aws_route_table_association.this[0]: Creating...
+module.nacls.aws_network_acl.this[0]: Creating...
+module.static_webpage_ec2.aws_instance.this[0]: Creating...
+module.route_association.aws_route_table_association.this[0]: Creation complete after 0s [id=rtbassoc-00e948a6427961792]
+module.route_association.aws_route_table_association.this[1]: Creation complete after 0s [id=rtbassoc-0675f53395efe939f]
+module.nacls.aws_network_acl.this[0]: Creation complete after 1s [id=acl-019fc823fa4fa939f]
+module.static_webpage_ec2.aws_instance.this[0]: Still creating... [10s elapsed]
+module.static_webpage_ec2.aws_instance.this[0]: Creation complete after 12s [id=i-0f84352b2b15c27c2]
+aws_eip.ec2: Creating...
+aws_eip.ec2: Creation complete after 2s [id=eipalloc-0d35ce5beafb216a8]
+
+Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+ec2_private_key = <sensitive>
+ec2_public_ip = "13.229.64.27"
+eip_public_ip = "18.139.98.24"
+subnets_list = {
+  "sub-a-pub-01" = "subnet-0f09b8ee7211d80d3"
+  "sub-b-pub-01" = "subnet-09a90fa3cb480af3e"
+}
+
+
+PS C:\Users\pascalpeh\Documents\cloud_eng_homework\module1\tf-env\static_webpage> curl.exe 18.139.98.24 | more
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 22210  100 22210    0     0   227k      0 --:--:-- --:--:-- --:--:--  228k
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Drool</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="hero_area ">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <img src="images/logo.png" alt="">
+          </a>
