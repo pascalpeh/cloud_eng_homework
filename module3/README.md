@@ -13,10 +13,10 @@ Please refer to the architecture diagram below
 
 
 ## Pre-requisites for deployment
-- Docker
 - Notepad editor (such as Visual studio code)
 - Oracle virtualbox (For running of virtual machines on local machines)
 - Vagrant (For quick deployment of pre-baked VMs from public vagrant boxes. Note that vagrant automatically integrates with Oracle Virtualbox for deployment of VMs)
+- Docker VM (Running on Oracle VirtualBox using Vagrant scripts)
 - Other deployment methods can be used such as using docker desktop
 
 
@@ -24,7 +24,11 @@ Please refer to the architecture diagram below
 - Vagrant version 2.4.3
 - Oracle VirtualBox version 7.0
 - Vagrant box used -> "gusztavvargadr/docker-linux"
-
+- Docker (Installed and configured in Vagrant box)
+- Docker Compose (Installed and configured in Vagrant box)
+- Docker images (Pulled from docker hub)
+  - redis:latest
+  - python:3.9-slim-buster
 
 
 ## Directory structure 
@@ -39,14 +43,16 @@ Please refer to the architecture diagram below
 
 
 ## Overview of Deployment Steps
-- Create a folder (eg. "webpage-visitor-count") that will be used for deploying a vagrant box running as docker VM
-- Change directory to the new folder (eg. "webpage-visitor-count") and copy the ./vagrant/VagrantFile onto the new folder
-- Create a subfolder named "script" (eg. vagrant/script) and copy the script "scripts/setup-containers.sh" onto it
-- Open a command prompt and change directory to the newly created folder (eg. "webpage-visitor-count")
-- Bring up the vagrant box using the following commands
+- Change directory to the folder "module3/vagrant"
+- There should be a file named "VagrantFile" and a sub-folder "script/setup-containers.sh"
+- Ensure that the pre-requisites software has been installed on your local machine
+- Run the following command to validate the Vagrant configuration
 ```
-cd <folder with Vagrantfile>
+cd module3/vagrant
 vagrant validate
+```
+- Run the following command to bring up the Vagrant environment. It will automatically setup the docker containers for the webpage
+```
 vagrant up
 ```
 - After the deployment has completed, the docker VM will be provisioned and 2 containers will be deployed (One python webpage that shows the number of visitors and one redis that keeps track of number of webpage visitor counts)
