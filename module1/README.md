@@ -18,8 +18,8 @@ Please refer to the architecture diagram below
 - AWS account and Access/Secret Keys with sufficient IAM permissions to create VPC & EC2 resources (For Terraform only)
 - Visual Studio Code (IDE)
 ### Method 2: AWS CloudFormation
- CloudFormation template
- AWS account with console access and sufficient IAM permissions to create VPC & EC2 resources
+ - CloudFormation template
+ - AWS account with console access and sufficient IAM permissions to create VPC & EC2 resources
 
 
 ## Deployment Environment
