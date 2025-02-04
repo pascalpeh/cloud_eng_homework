@@ -1,0 +1,273 @@
+##### Note: This cloudformation template is used for quick provisioning of public EC2 running on Amazon Linux with static website
+#####
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create a VPC with 2 public subnets, 1 x public EC2 instance. VPC flow logs are enabled
+
+
+  ########
+  ##  How to use AWS CLI Command to check syntax of CloudFormation template script
+  ## aws cloudformation validate-template --template-body file://<cloudformation-template-name>.yaml
+  ## Example: 
+  ## aws cloudformation validate-template --template-body file://C:\work\CloudFormation\cloudfront\<filename>.yaml 
+  #########
+
+  ######
+  ## Note
+  ## - This CloudFormation script is used for creating the following resources for quick testing of Amazon Linux (Latest AMI) with static website. It does not offer any input parameters
+  ## - Simple VPC with 2 x public subnets
+  ## - EC2 instance with Apache webserver installed and static website configured
+  ######
+  
+
+
+##### Input parameters
+Parameters:
+
+  PrefixName:
+    Type: String
+    Default: cf1
+    Description: Important -> Prefix name to append in front of AWS resources (Only alphanumeric with lowercase letters)
+    AllowedPattern: ^[a-z0-9]+$
+
+  InstanceType:
+    Type: String
+    Description: EC2 instance type
+    AllowedValues: 
+      - t2.micro
+      - t2.small
+      - t2.medium
+    Default: t2.micro
+
+  ## Get the latest AMI for Amazon Linux (It will check based on the current region)
+  LatestAmiId:
+    Type: "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>"
+    Default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+
+
+
+
+#### Create Resources on AWS
+Resources:
+
+
+#### Create VPC and 2 x public subnet
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.1.0/24
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-vpc-01
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-IGW
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 192.168.1.0/28
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-PublicSubnet1
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 192.168.1.16/28
+      AvailabilityZone: !Select [1, !GetAZs '']
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-PublicSubnet2
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-PublicRouteTable
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+
+# ##### Create VPC Flow Logs
+#   VPCFlowLogRole:
+#     Type: AWS::IAM::Role
+#     Properties:
+#       RoleName: !Sub ${PrefixName}-VPCFlowLogRole
+#       AssumeRolePolicyDocument:
+#         Version: "2012-10-17"
+#         Statement:
+#           - Effect: Allow
+#             Principal:
+#               Service: vpc-flow-logs.amazonaws.com
+#             Action: sts:AssumeRole
+
+#   VPCFlowLogPolicy:
+#     Type: AWS::IAM::Policy
+#     Properties:
+#       PolicyName: !Sub ${PrefixName}-VPCFlowLogPolicy
+#       PolicyDocument:
+#         Version: "2012-10-17"
+#         Statement:
+#           - Effect: Allow
+#             Action:
+#               - logs:CreateLogGroup
+#               - logs:CreateLogStream
+#               - logs:PutLogEvents
+#               - logs:DescribeLogGroups
+#               - logs:DescribeLogStreams
+#             Resource: !Sub arn:aws:logs:*:*:log-group:/aws/vpc/${PrefixName}-vpc-01-FlowLogs:*
+#       Roles:
+#         - !Ref VPCFlowLogRole
+
+
+#   VPCFlowLogGroup:
+#     Type: AWS::Logs::LogGroup
+#     Properties:
+#       LogGroupName: !Sub /aws/vpc/${PrefixName}-vpc-01-FlowLogs
+#       RetentionInDays: 7
+
+#   VPCFlowLog:
+#     Type: AWS::EC2::FlowLog
+#     Properties:
+#       DeliverLogsPermissionArn: !GetAtt VPCFlowLogRole.Arn
+#       ResourceId: !Ref MyVPC
+#       ResourceType: VPC
+#       TrafficType: ALL
+#       LogGroupName: !Ref VPCFlowLogGroup
+#       LogFormat: "${version} ${vpc-id} ${subnet-id} ${instance-id} ${interface-id} ${account-id} ${type} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${pkt-srcaddr} ${pkt-dstaddr} ${protocol} ${bytes} ${packets} ${start} ${end} ${action} ${tcp-flags} ${log-status}"
+
+
+
+##### Create 1 x EC2 instance with Apache Web server installed and configured with static webpage
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EC2
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0   ## Allow all public ip address
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0   ## Allow all public ip address
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0   ## Allow all public ip address
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-sgrp-ec2-01
+
+
+### Create SSH Keypair for EC2 instance
+  EC2KeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: !Sub ${PrefixName}-KeyPair
+      PublicKeyMaterial: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCEUr7oSGOso2x35M6kfaVuUnzqF4NDG/Ly9CTNgR/UkuDCVzQOYh5EfNThNqhbqhnz+WjJqm2tTcmPufhYIwkjIiitAv+3ZhhT7JvGc5bzVUZnqErdqmvQ/C0+fZzkBRL+RjoA9mrsVHQIuhnHMbXXhTlJGiHYqmgv3YVSqOxnTRJ3HgUSwBG73JLRKuEzkhi39rXURk9t3AxrKyf5mgXFRBZjLyPVPnyZ2eaYMBMPro4ASsnFyU7LH4vgIw0ElGzFxqbH2lLUTm6QmS8n7aQDI3p3PP872KfyTMjXSwk1jESdd+THCWPJNqf+U4Y2Rrkmbq2V1k3SHvbYgEAnjeb5 rsa-key-20230705
+
+
+### Create EC2 instance with Apache webserver installed
+  MyInstance:
+    Type: AWS::EC2::Instance
+    DependsOn: PublicSubnet1RouteTableAssociation
+    Properties:
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref EC2KeyPair
+      ImageId: !Ref LatestAmiId
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref PublicSubnet1
+          GroupSet:
+            - !Ref EC2SecurityGroup
+      # SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub ${PrefixName}-ec2-static-webpage
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/sh
+          # Set timezone to Singapore
+          sudo timedatectl set-timezone Asia/Singapore
+
+          # Install Apache Web Server
+          sudo yum install -y httpd mod_ssl
+
+          # Install Git command to clone github repositories
+          sudo yum install -y git
+
+          # Disable firewall daemon
+          sudo systemctl stop firewalld
+          sudo systemctl disable firewalld
+
+          # Clone public git repository for static webpage hosting
+          cd ~
+          git clone https://github.com/rswiftoffice/SES-Cloud-Homework.git
+          cp -pr SES-Cloud-Homework/* /var/www/html/
+
+
+          # Start Apache web server
+          sudo systemctl enable httpd
+          sudo systemctl start httpd
+
+### Create Elastic IP and associate to the EC2
+  EC2EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref MyInstance
+
+Outputs:
+  InstanceId:
+    Value: !Ref MyInstance
+    Description: EC2 instance ID
+  EC2PublicDNSName:
+    Value: !GetAtt MyInstance.PublicDnsName
+    Description: Public DNS Name of the EC2 instance
+  EC2PublicIPAddress:
+    Value: !GetAtt MyInstance.PublicIp
+    Description: Public IP address of the EC2 instance
+  ElasticIPAddress:
+    Value: !Ref EC2EIP
+    Description: Elastic IP for EC2 instance
