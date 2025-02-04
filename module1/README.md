@@ -23,12 +23,12 @@ Please refer to the architecture diagram below
 
 
 ## Deployment Environment
-- Terraform will be used for provisioning the environment for static HTML website on AWS Cloud. The following resources will be provisioned
+- Terraform or CloudFormation can be used for provisioning the environment for static HTML website on AWS Cloud. The following resources will be provisioned
 - 1 x VPC
 - 2 x public subnet (1 in availability zone 1a and 1 in availability zone 1b)
 - 2 x security groups (1 for ssh access to VM and 1 for web server access)
 - 1 x internet gateway for VM access to public internet
-- 1 x RedHat 9 Linux VM with bootscrap scripts to perform setup & installation of Apache webserver and copy the static website contents from public github repository
+- 1 x Linux VM with bootscrap scripts to perform setup & installation of Apache webserver and copy the static website contents from public github repository
 - 1 x public Elastic IP for accessing the static HTML website
 
 
