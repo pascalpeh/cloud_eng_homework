@@ -28,21 +28,21 @@ Infrastructure as Code (IaC) tools such as Terraform are utilized for deployment
 
 
 ### Components
-- AWS Global Accelerator: Provides a single, static entry point (IP addresses or DNS name) for the application. Uses traffic dials to route 100% of traffic to the primary region (active) and 0% to the secondary region (standby).
-- AWS Application Load Balancer: The ALB distributes traffic across the EKS pools in each region with the primary region actively serving traffic. The ALB in secondary region is configured in standby mode (routed by AWS Global Accelerator)
-- AWS Cognito: AWS Cognito is used for performing user authentication, authorization to the e-commerce platform. 
-- AWS EKS (Elastic Kubernetes Service): Application microservices are deployed on AWS EKS with Fargate in both regions. Pods are active with horizontal pod auto-scaling in the primary region, while scaled to zero in the secondary region for cost optimization until failover.
-- AWS ECR (Elastic Container Registry): Manages the container images including scanning of software vulnerabilities leveraging the Common Vulnerabilities and Exposures (CVEs) database.
-- ElastiCache for Redis: ElastiCache for Redis is deployed in both regions for caching frequently access data to improve application responsiveness
-- AWS AuroraDB Global Database: The primary Aurora cluster (writer and reader) resides in the primary region. Read replicas are located in the secondary region which can be promoted as primary during a failover
-- AWS Network Firewall: Used for performing ingress/egress network traffic inspection
-- AWS EFS: Used for storing of application persistent configuration files
-- AWS Datasync: For replication of application configuration files across different region
-- AWS S3: For storing of application logs, IaC state files
-- AWS SES (Simple Email Service): To allow sending of emails from application
-- AWS Shield Standard: AWS Shield Standard provides a basic level of DDoS protection to all AWS customers without any extra cost and it is a valuable first line of defense against common attacks.
-- AWS WAF (Web Application Firewall): The WAF is configured with Application load balancers to inspect incoming web requests and helps to protect against common web application attacks such as SQL injection, cross site scripting, etc.
-- Monitoring and Alerts: Monitoring dashboard and CloudWatch alarms are configured to monitor for any service failures on the primary region.
+- **AWS Global Accelerator**: Provides a single, static entry point (IP addresses or DNS name) for the application. Uses traffic dials to route 100% of traffic to the primary region (active) and 0% to the secondary region (standby).
+- **AWS Application Load Balancer**: The ALB distributes traffic across the EKS pools in each region with the primary region actively serving traffic. The ALB in secondary region is configured in standby mode (routed by AWS Global Accelerator)
+- **AWS Cognito**: AWS Cognito is used for performing user authentication, authorization to the e-commerce platform. 
+- **AWS EKS (Elastic Kubernetes Service)**: Application microservices are deployed on AWS EKS with Fargate in both regions. Pods are active with horizontal pod auto-scaling in the primary region, while scaled to zero in the secondary region for cost optimization until failover.
+- **AWS ECR (Elastic Container Registry)**: Manages the container images including scanning of software vulnerabilities leveraging the Common Vulnerabilities and Exposures (CVEs) database.
+- **ElastiCache for Redis**: ElastiCache for Redis is deployed in both regions for caching frequently access data to improve application responsiveness
+- **AWS AuroraDB Global Database**: The primary Aurora cluster (writer and reader) resides in the primary region. Read replicas are located in the secondary region which can be promoted as primary during a failover
+- **AWS Network Firewall**: Used for performing ingress/egress network traffic inspection
+- **AWS EFS (Elastic File System)**: Used for storing of application persistent configuration files
+- **AWS Datasync**: For replication of application configuration files across different region
+- **AWS S3**: For storing of application logs, IaC state files
+- **AWS SES (Simple Email Service)**: To allow sending of emails from application
+- **AWS Shield Standard**: AWS Shield Standard provides a basic level of DDoS protection to all AWS customers without any extra cost and it is a valuable first line of defense against common attacks.
+- **AWS WAF (Web Application Firewall)**: The WAF is configured with Application load balancers to inspect incoming web requests and helps to protect against common web application attacks such as SQL injection, cross site scripting, etc.
+- **Monitoring and Alerts**: Monitoring dashboard and CloudWatch alarms are configured to monitor for any service failures on the primary region.
 
 
 
