@@ -10,16 +10,19 @@ Please refer to the architecture diagram below
 ![Module 4 - Architecture Diagram](architecture-diagram/module4-diagram.png)
 
 ## Solution Overview
-This diagram depicts a multi-region active-passive architecture on AWS, spanning two regions. Each region hosts an EKS cluster running on Fargate. The primary region is the active site, with pods configured for horizontal pod autoscaling.The secondary region is passive, with standby pods ready for failover. Application configuration files and other stateful data reside in AWS EFS and are replicated to the secondary region using AWS DataSync. Container images are pulled from ECR, and application logs are exported to S3; both ECR and S3 content are automatically replicated to the secondary region using cross-region replication. FluxCD is integrated with both EKS clusters, periodically polling a designated GitHub repository (the source of truth) for changes and automatically deploying updates.
 
-AWS Global Accelerator uses two endpoint groups, one for the primary region and another for the secondary (failover) region, each associated with an Application Load Balancer. Under normal operation,  all user traffic is directed (100% traffic dial) to the primary region's Application Load Balancer, where it undergoes inspection by AWS WAF and AWS Network Firewall to detect and prevent malicious activity.
+This diagram illustrates a multi-region active-passive architecture.  Two regions host EKS clusters on Fargate. The primary region is active, using horizontal pod autoscaling, while the secondary region is passive, with standby pods.  Stateful data (application configuration) is stored in EFS and replicated to the secondary region via DataSync. Container images (ECR) and application logs (S3) are also replicated using cross-region replication. FluxCD automates deployments to both EKS clusters by polling a GitHub repository for changes.
 
-Users authenticate and authorize with the e-commerce platform's web and mobile applications via AWS Cognito. Due to Cognito's lack of built-in cross-region replication, a custom solution is employed. CloudWatch Events and AWS Step Functions periodically export user profiles and groups to a DynamoDB global table in the primary region.  DynamoDB replicates these updates to the secondary region, where they are imported into the standby Cognito user pool.  A third-party identity management platform, such as Okta, is also a potential alternative.
+
+AWS Global Accelerator uses endpoint groups in primary and secondary regions, each with an Application Load Balancer.  Normally, all traffic is configured using 100% traffic dial to direct to the primary region's ALB, where it's inspected by AWS WAF and Network Firewall for malicious activity.
+
+
+AWS Cognito handles user authentication and authorization.  Because Cognito lacks native cross-region replication, user data is periodically exported to a DynamoDB global table in the primary region via CloudWatch Events and Step Functions, then replicated to the secondary region's Cognito user pool.  Okta is also considered as a potential alternative.
 
 AWS AuroraDB Global Database is used, with a write/read instance in the primary region and a read-only instance in the secondary region.  This secondary instance is synchronized with the primary and can be promoted to a write instance in the event of a failover. AWS Route 53 private hosted zones are integrated with the Aurora writer/reader endpoints, providing simplified DNS names for the EKS application to use.
 
 
-Outbound internet traffic originating from the EKS cluster is routed through AWS Firewall endpoints for inspection.  At the firewall endpoints, the firewall rules is implemented, including whitelisting of approved domain names and Fully Qualified Domain Names (FQDNs). These rules govern whether the traffic is allowed to proceed to its destination on the internet.  Only traffic matching the defined criteria, such as whitelisted domains, is allowed to traverse the firewall and is subsequently routed to the NAT gateway.
+EKS cluster outbound internet traffic is inspected by AWS Firewall endpoints.  Firewall rules, including whitelists of approved domains and FQDNs, determine which traffic is allowed to proceed to the internet via the NAT gateway.
 
 Infrastructure as Code (IaC) tools such as Terraform are utilized for deployment of the setup in the diagram for multi-region so that it allows for version control, automation and repeatability. Furthermore, CI/CD tools, like GitHub Actions and GitOps using Fluxcd are integrated to automate the build, test, and deployment pipelines.
 
