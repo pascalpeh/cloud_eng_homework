@@ -10,17 +10,18 @@ Please refer to the architecture diagram below
 ![Module 4 - Architecture Diagram](architecture-diagram/module4-diagram.png)
 
 ## Solution Overview
-This diagram depicts a multi-region active-passive architecture deployed on AWS across two regions.  Each region hosts an EKS cluster running on Fargate. Region 1 is the primary region, where pods are configured for horizontal pod autoscaling.  Application configuration files and other stateful data reside in AWS EFS and are replicated to the secondary region using AWS DataSync at regular intervals. Container images are pulled from ECR, and application logs are exported to S3, with both ECR and S3 content also replicated to the secondary region.  FluxCD is integrated with the EKS cluster to periodically poll a configured GitHub repository (the source of truth) for changes and automatically deploy them to the EKS cluster.
+This diagram depicts a multi-region active-passive architecture on AWS, spanning two regions. Each region hosts an EKS cluster running on Fargate. The primary region is the active site, with pods configured for horizontal pod autoscaling.The secondary region is passive, with standby pods ready for failover. Application configuration files and other stateful data reside in AWS EFS and are replicated to the secondary region using AWS DataSync. Container images are pulled from ECR, and application logs are exported to S3; both ECR and S3 content are automatically replicated to the secondary region using cross-region replication. FluxCD is integrated with both EKS clusters, periodically polling a designated GitHub repository (the source of truth) for changes and automatically deploying updates.
 
-AWS AuroraDB Global Database is used, with a write/read instance in the primary region and a read-only instance in the secondary region.  This secondary instance is synchronized with the primary and can be promoted to a write instance in the event of a failover. AWS Route 53 private hosted zones are integrated with the Aurora writer/reader endpoints, providing simplified DNS names for the EKS application to use.
-
-AWS Global Accelerator is setup with two endpoint groups: one for the primary region and one for the secondary (failover) region with application load balancer fronting. The traffic dial is set to 100% directing all user traffic to the primary region.
+AWS Global Accelerator uses two endpoint groups, one for the primary region and another for the secondary (failover) region, each associated with an Application Load Balancer. Under normal operation,  all user traffic is directed (100% traffic dial) to the primary region's Application Load Balancer, where it undergoes inspection by AWS WAF and AWS Network Firewall to detect and prevent malicious activity.
 
 Users authenticate and authorize with the e-commerce platform's web and mobile applications via AWS Cognito. Due to Cognito's lack of built-in cross-region replication, a custom solution is employed. CloudWatch Events and AWS Step Functions periodically export user profiles and groups to a DynamoDB global table in the primary region.  DynamoDB replicates these updates to the secondary region, where they are imported into the standby Cognito user pool.  A third-party identity management platform, such as Okta, is also a potential alternative.
 
+AWS AuroraDB Global Database is used, with a write/read instance in the primary region and a read-only instance in the secondary region.  This secondary instance is synchronized with the primary and can be promoted to a write instance in the event of a failover. AWS Route 53 private hosted zones are integrated with the Aurora writer/reader endpoints, providing simplified DNS names for the EKS application to use.
+
+
 Outbound internet traffic originating from the EKS cluster is routed through AWS Firewall endpoints for inspection.  At the firewall endpoints, the firewall rules is implemented, including whitelisting of approved domain names and Fully Qualified Domain Names (FQDNs). These rules govern whether the traffic is allowed to proceed to its destination on the internet.  Only traffic matching the defined criteria, such as whitelisted domains, is allowed to traverse the firewall and is subsequently routed to the NAT gateway.
 
-Infrastructure as Code (IaC) tools such as Terraform should be utilized for deployment of the setup in the diagram for multi-region so that it allows for version control, automation and repeatability. Furthermore, CI/CD tools, like GitHub Actions and GitOps using Fluxcd are integrated to automate the build, test, and deployment pipelines.
+Infrastructure as Code (IaC) tools such as Terraform are utilized for deployment of the setup in the diagram for multi-region so that it allows for version control, automation and repeatability. Furthermore, CI/CD tools, like GitHub Actions and GitOps using Fluxcd are integrated to automate the build, test, and deployment pipelines.
 
 
 ### Components
@@ -31,7 +32,7 @@ Infrastructure as Code (IaC) tools such as Terraform should be utilized for depl
 - AWS ECR (Elastic Container Registry): Manages the container images including scanning of software vulnerabilities leveraging the Common Vulnerabilities and Exposures (CVEs) database.
 - ElastiCache for Redis: ElastiCache for Redis is deployed in both regions for caching frequently access data to improve application responsiveness
 - AWS AuroraDB Global Database: The primary Aurora cluster (writer and reader) resides in the primary region. Read replicas are located in the secondary region which can be promoted as primary during a failover
-- AWS Network Firewall: Used for performing egress network traffic inspection to the internet
+- AWS Network Firewall: Used for performing ingress/egress network traffic inspection
 - AWS EFS: Used for storing of application persistent configuration files
 - AWS Datasync: For replication of application configuration files across different region
 - AWS S3: For storing of application logs, IaC state files
@@ -51,6 +52,7 @@ The following table shows an estimated cost for both regions per month:
 | Elastic Container Registry (ECR) | 10GB per month | $3.80 per month |
 | AWS Elastic File System (EFS) | 10GB per month | $9.4 per month |
 | AWS DataSync | 10GB per month | $0.26 per month|
+| AWS Global Accelerator | Fixed monthly $18 + $0.015 per GB (Assume 10GB) | $18.15 |
 | AWS Application Load Balancer | 10GB per month, 10 average number of new connections per second | $43.8 per month|
 | AWS Web Application Firewall (WAF) | 1 Web ACL, 10 rules per ACL, 5 managed rule groups per ACL | $52 per month|
 | AWS Simple Email Service (SES) | 250000 mail messages sent per month | $26.20 per month |
@@ -68,11 +70,18 @@ The following table shows an estimated cost for both regions per month:
 | AWS AuroraDB Global Database | Amazon Aurora MySQL-Compatible, 200GB storage | $300 per month |
 
 
-Total estimated cost: $ 1830.32
+Total estimated cost: $ 1848.47
 
 
 ## Failover process
 
-Manual Failover:
+Please refer to the architecture diagram during a failover
 
-Automated Failover: 
+![Module 4 - Failover ](architecture-diagram/module4-diagram-failover.png)
+
+
+1) **Continuous Service Monitoring**:  AWS employs CloudWatch to continuously monitor the health and performance of its various services, including databases, load balancers, and network infrastructure deployed across all regions.
+
+2) **Automated AuroraDB Failover**: In the rare event of a regional failure affecting the primary Aurora Global Database cluster, it automatically initiates a failover process, promoting the designated secondary cluster in secondary region to become the new primary (writer) cluster, the failover typically completes less than 30 seconds. Furthermore, AuroraDB offers a fully managed endpoint that automatically updates to reflect the current writer instance after any cross-region switchover or failover. This eliminates the need for application modifications and streamlines routing to the writer instance.
+
+3) **Global Traffic Redirection via Global Accelerator**:   AWS Global Accelerator continuously monitors the health of Application Load Balancers (ALBs) in both the primary and secondary regions, with traffic initially directed 100% to the primary region. Upon a primary region failure, the health checks for its ALBs fail, marking them as unhealthy. Global Accelerator disregards the 100% traffic dial setting during failover. Regardless of the traffic dial configuration, Global Accelerator will consider the secondary region for failover if the primary region is unhealthy. Detecting healthy ALBs in the secondary region, Global Accelerator then redirects all traffic there, making the secondary region the new active site.
