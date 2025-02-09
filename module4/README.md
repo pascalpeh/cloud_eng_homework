@@ -73,7 +73,7 @@ The following table shows an estimated cost for both regions per month:
 | AWS AuroraDB Global Database | Amazon Aurora MySQL-Compatible, 200GB storage | $300 per month |
 
 
-Total estimated cost: $ 1848.47
+Total estimated cost: $ 1848.47 USD per month
 
 
 ## Failover process
