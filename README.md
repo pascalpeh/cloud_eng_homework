@@ -1,6 +1,5 @@
 # Summary
-- This code repository comprises information and scripts for the Cloud Eng homework.
-- There are 4 modules where each module is located in a separate folder. Below shows the purpose of each sub-folders
+- The project is organized into four modules, each residing in its own directory.  The purpose of each subdirectory is described below.
     ```
     /module1              - Deployment of Static HTML website
     /module2              - Deploy Continuous Deployment for static HTML website
