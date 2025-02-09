@@ -83,7 +83,8 @@ Please refer to the architecture diagram during a failover
 ![Module 4 - Failover ](architecture-diagram/module4-diagram-failover.png)
 
 
-1) **Continuous Service Monitoring**:  AWS employs CloudWatch to continuously monitor the health and performance of its various services, including databases, load balancers, and network infrastructure deployed across all regions.
+1) **Continuous Service Monitoring**:  AWS employs CloudWatch to continuously monitor the health and performance of its various services, including databases, load balancers, and network infrastructure deployed across all regions. CloudWatch alarms notify the operations team of service outages.
+
 
 2) **Automated AuroraDB Failover**: In the rare event of a regional failure affecting the primary Aurora Global Database cluster, it automatically initiates a failover process, promoting the designated secondary cluster in secondary region to become the new primary (writer) cluster, the failover typically completes less than 30 seconds. Furthermore, AuroraDB offers a fully managed endpoint that automatically updates to reflect the current writer instance after any cross-region switchover or failover. This eliminates the need for application modifications and streamlines routing to the writer instance.
 
